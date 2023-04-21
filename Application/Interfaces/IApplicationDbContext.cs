@@ -12,6 +12,7 @@ namespace Application.Interfaces
     {
         DbSet<User> Users { get; set; }
         DbSet<Photo> Photos { get; set; }
+        DbSet<Comment> Comments { get; set; }
         Task<int> SaveChanges();
     }
 }

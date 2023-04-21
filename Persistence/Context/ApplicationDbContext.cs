@@ -17,9 +17,23 @@ namespace Application.Context
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Photo> Photos { get; set; }
+        public DbSet<Comment> Comments { get; set; }
         public async Task<int> SaveChanges()
         {
             return await base.SaveChangesAsync();
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>()
+                .HasMany(x => x.Photos)
+                .WithOne(x => x.User)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Photo>()
+                .HasMany(x => x.Comments)
+                .WithOne(x => x.Photo)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class User : Base
+    public class Comment : Base
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public string Content { get; set; }
+        public string Likes { get; set; }
 
-        public List<Photo> Photos { get; set; }
+        public Photo Photo { get; set; }
     }
 }
