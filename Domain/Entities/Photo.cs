@@ -15,9 +15,12 @@ namespace Domain.Entities
         public IFormFile file { get; set; }
         public string Path { get; set; }
         public string Description { get; set; }
-        public int Likes { get; set; } = 0;
 
-        public User? User { get; set; }
-        public List<Comment>? Comments { get; set; } 
+
+        public User User { get; set; }
+       
+        public virtual List<Comment>? Comments { get; set; }
+
+        public virtual List<User>? Likes { get; set; }
     }
 }

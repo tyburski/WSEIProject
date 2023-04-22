@@ -4,23 +4,23 @@
 
 namespace Persistence.Migrations
 {
-    public partial class Initial1 : Migration
+    public partial class like2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "file",
+                name: "LikeId",
                 table: "Photos");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "file",
+            migrationBuilder.AddColumn<int>(
+                name: "LikeId",
                 table: "Photos",
-                type: "nvarchar(max)",
+                type: "int",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: 0);
         }
     }
 }

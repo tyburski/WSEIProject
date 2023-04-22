@@ -9,27 +9,33 @@ using System.Threading.Tasks;
 
 namespace Application.Features.UserFeatures
 {
-    public class CreateUserCommand : IRequest<int>
+    public class CreateUserCommand : IRequest<bool>
     {
         public string Username { get; set; }
         public string Password { get; set; }
 
-        public class AddPhotoCommandHandler : IRequestHandler<CreateUserCommand, int>
+        public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, bool>
         {
             private readonly IApplicationDbContext _context;
-            public AddPhotoCommandHandler(IApplicationDbContext context)
+            public CreateUserCommandHandler(IApplicationDbContext context)
             {
                 _context = context;
             }
-            public async Task<int> Handle(CreateUserCommand command, CancellationToken cancellationToken)
+            public async Task<bool> Handle(CreateUserCommand command, CancellationToken cancellationToken)
             {
+                var check = _context.Users.FirstOrDefault(x => x.Username.Equals(command.Username));
+                if(check is not null)
+                {
+                    return false;
+                }
                 var user = new User();
                 user.Username = command.Username;
-                user.Password = command.Password;
+                user.Password = BCrypt.Net.BCrypt.HashPassword(command.Password);
+                user.Role = "User";
 
                 _context.Users.Add(user);
                 await _context.SaveChanges();
-                return user.Id;
+                return true;
             }
         }
     }

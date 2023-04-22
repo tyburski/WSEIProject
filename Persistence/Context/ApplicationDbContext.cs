@@ -18,6 +18,7 @@ namespace Application.Context
         public DbSet<User> Users { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Comment> Comments { get; set; }
+
         public async Task<int> SaveChanges()
         {
             return await base.SaveChangesAsync();
@@ -28,12 +29,22 @@ namespace Application.Context
 
             modelBuilder.Entity<User>()
                 .HasMany(x => x.Photos)
-                .WithOne(x => x.User)
-                .OnDelete(DeleteBehavior.Cascade);
+                .WithOne(x=>x.User)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            modelBuilder.Entity<User>()
+                .HasMany(x=>x.Comments)
+                .WithOne(x=>x.User)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Comment>()
+                .HasOne(x=>x.Photo)
+                .WithMany(x=>x.Comments)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Photo>()
-                .HasMany(x => x.Comments)
-                .WithOne(x => x.Photo)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasMany<User>(x => x.Likes);
+                
         }
     }
 }

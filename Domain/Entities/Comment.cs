@@ -10,8 +10,13 @@ namespace Domain.Entities
     public class Comment : Base
     {
         public string Content { get; set; }
-        public string Likes { get; set; }
 
         public Photo Photo { get; set; }
+
+        public  User User { get; set; }
+
+        public bool isDeleted { get; set; }
+
+        public virtual List<User>? Likes { get; set; }
     }
 }
