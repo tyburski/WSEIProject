@@ -32,28 +32,34 @@ namespace Application.Features.PhotoFeatures
                 string userId = jwtToken.Claims.First(c => c.Type == "UserId").Value;
                 string userName = jwtToken.Claims.First(c => c.Type == "Username").Value;
 
-                var user = _context.Users.FirstOrDefault(x => x.Id.Equals(Int32.Parse(userId)));
-                if (user is null) return 0;
+                using (var memoryStream = new MemoryStream())
+                {
+                    await command.file.CopyToAsync(memoryStream);
 
-                var photo = new Photo();
+                    if (memoryStream.Length < 2097152)
+                    {
+                        var user = _context.Users.FirstOrDefault(x => x.Id.Equals(Int32.Parse(userId)));
+                        if (user is null) return default;
 
-                photo.file = command.file;
-                photo.Description = command.Description;
-                photo.User = user;
+                        var photo = new Photo()
+                        {
+                            file = memoryStream.ToArray(),
+                            Description = command.Description,
+                            User = user
+                        };
 
-                string path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot\\images\\{userName}");
-                if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+                        _context.Photos.Add(photo);
 
-                string uploadpath = Path.Combine(path, $"{Guid.NewGuid()}{Path.GetExtension(Path.GetFileName(command.file.FileName))}");
+                        await _context.SaveChanges();
 
-                var stream = new FileStream(uploadpath, FileMode.Create);
-                await command.file.CopyToAsync(stream);
-
-                photo.Path = uploadpath;
-
-                _context.Photos.Add(photo);
-                await _context.SaveChanges();
-                return photo.Id;
+                        return photo.Id;
+                    }
+                    else
+                    {
+                        return default;
+                    }
+                }
+                
             }
         }
     }

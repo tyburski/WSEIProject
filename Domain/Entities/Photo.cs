@@ -11,9 +11,7 @@ namespace Domain.Entities
 {
     public class Photo : Base
     {
-        [NotMapped]
-        public IFormFile file { get; set; }
-        public string Path { get; set; }
+        public byte[] file { get; set; }
         public string Description { get; set; }
 
 

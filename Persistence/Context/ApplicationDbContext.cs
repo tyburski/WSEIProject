@@ -11,8 +11,7 @@ namespace Application.Context
 {
     public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
+        public ApplicationDbContext(DbContextOptions options): base(options)
         {
         }
         public DbSet<User> Users { get; set; }
