@@ -74,5 +74,5 @@ W projekcie zostało wykonane API umożliwiające wykonywanie wszystkich funkcjo
 
 ## Autorzy
 
-- Dawid Tyburki (dawid.tyburksi@microsoft.wsei.edu.pl)
+- Dawid Tyburski (dawid.tyburski@microsoft.wsei.edu.pl)
 - Kacper Torba (kacper.torba@microsoft.wsei.edu.pl)
